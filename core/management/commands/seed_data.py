@@ -2,12 +2,14 @@ import random
 from datetime import timedelta
 
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from accounts.models import Profile
 from core.placeholder_images import generate_placeholder_photo
+from core.real_estate_photos import fetch_photo_pool
 from listings.models import Category, Listing, ListingImage
 from promotions.models import PLAN_PRICES, Promotion
 
@@ -20,11 +22,13 @@ ROOM_LABELS_BY_CATEGORY = {
 
 FIRST_NAMES = [
     "Elvin", "Aysel", "Tural", "Günel", "Rəşad", "Nərmin", "Vüqar", "Səbinə",
-    "Orxan", "Leyla",
+    "Orxan", "Leyla", "Kamran", "Nigar", "Elşən", "Türkan", "Ramin", "Sevinc",
+    "Anar", "Ülviyyə", "Fərid", "Aygün",
 ]
 LAST_NAMES = [
     "Məmmədov", "Hüseynova", "Əliyev", "Qasımova", "İsmayılov", "Rzayeva",
-    "Quliyev", "Abbasova", "Nağıyev", "Cəfərova",
+    "Quliyev", "Abbasova", "Nağıyev", "Cəfərova", "Əhmədov", "Kərimova",
+    "Bayramov", "Sadıqova", "Hacıyev", "Vəliyeva", "Muradov", "Şirinova",
 ]
 
 DISTRICTS = ["Nəsimi", "Yasamal", "Xətai", "Nərimanov", "Binəqədi", "Səbail", "Nizami"]
@@ -54,7 +58,8 @@ class Command(BaseCommand):
     help = "EvTap üçün tamamilə kurgusal nümayiş (demo) elan və istifadəçi verisi yaradır."
 
     def add_arguments(self, parser):
-        parser.add_argument("--count", type=int, default=40)
+        parser.add_argument("--count", type=int, default=50)
+        parser.add_argument("--users", type=int, default=40)
         parser.add_argument("--flush", action="store_true")
 
     def handle(self, *args, **options):
@@ -78,9 +83,16 @@ class Command(BaseCommand):
 
         categories = list(Category.objects.all())
 
+        self.stdout.write("İnternetdən əmlak fotoları yüklənir (Pexels)...")
+        photo_pools = {}
+        for category in categories:
+            pool = fetch_photo_pool(category.slug)
+            photo_pools[category.slug] = pool
+            self.stdout.write(f"  {category.name}: {len(pool)} foto tapıldı.")
+
         users = list(User.objects.filter(username__startswith="demo_"))
         if not users:
-            for i in range(10):
+            for i in range(options["users"]):
                 first = FIRST_NAMES[i % len(FIRST_NAMES)]
                 last = LAST_NAMES[i % len(LAST_NAMES)]
                 username = f"demo_{first.lower()}{i}"
@@ -149,12 +161,20 @@ class Command(BaseCommand):
             )
 
             labels = ROOM_LABELS_BY_CATEGORY[category.slug]
-            for img_index in range(random.randint(2, 7)):
+            pool = photo_pools.get(category.slug) or []
+            image_count = random.randint(3, 7)
+            chosen_photos = (
+                random.sample(pool, min(image_count, len(pool))) if pool else []
+            )
+            for img_index in range(image_count):
                 listing_image = ListingImage(
                     listing=listing, is_cover=(img_index == 0), order=img_index
                 )
-                label = labels[img_index % len(labels)]
-                content = generate_placeholder_photo(label, img_index + listing.pk)
+                if img_index < len(chosen_photos):
+                    content = ContentFile(chosen_photos[img_index])
+                else:
+                    label = labels[img_index % len(labels)]
+                    content = generate_placeholder_photo(label, img_index + listing.pk)
                 listing_image.image.save(
                     f"seed_{listing.pk}_{img_index}.jpg", content, save=True
                 )

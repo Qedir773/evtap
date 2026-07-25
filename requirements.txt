@@ -8,3 +8,4 @@ dj-database-url>=3.0
 psycopg[binary]>=3.2
 django-cloudinary-storage>=0.3
 cloudinary>=1.36
+requests>=2.31
