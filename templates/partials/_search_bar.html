@@ -1,0 +1,17 @@
+<form method="get" action="{% url 'listings:listing_search' %}" class="evtap-search-bar row g-2 align-items-end">
+    <div class="col-md-4">
+        <label class="form-label small text-white-50">{{ search_form.q.label }}</label>
+        {{ search_form.q }}
+    </div>
+    <div class="col-md-3">
+        <label class="form-label small text-white-50">{{ search_form.transaction_type.label }}</label>
+        {{ search_form.transaction_type }}
+    </div>
+    <div class="col-md-3">
+        <label class="form-label small text-white-50">{{ search_form.category.label }}</label>
+        {{ search_form.category }}
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-evtap-accent w-100">Axtar</button>
+    </div>
+</form>

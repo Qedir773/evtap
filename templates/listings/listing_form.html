@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Elan yerləşdir — {{ site_name }}{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-4">{% if object %}Elanı redaktə et{% else %}Yeni elan yerləşdir{% endif %}</h2>
+
+{% if form.errors or image_formset.errors or image_formset.non_form_errors %}
+<div class="alert alert-danger">
+    Formda xətalar var, zəhmət olmasa aşağıda qeyd olunan sahələri düzəldin. <strong>Diqqət:</strong> xəta olduqda seçdiyiniz şəkil(lər) brauzer tərəfindən sıfırlanır, formu düzəltdikdən sonra şəkilləri yenidən seçməlisiniz.
+</div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="evtap-form">
+    {% csrf_token %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">Kateqoriya <span class="text-danger">*</span></label>
+            {{ form.category }}
+            {% for error in form.category.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Əməliyyat növü</label>
+            {{ form.transaction_type }}
+            {% for error in form.transaction_type.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-12">
+            <label class="form-label">Başlıq <span class="text-danger">*</span></label>
+            {{ form.title }}
+            {% for error in form.title.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-12">
+            <label class="form-label">Təsvir <span class="text-danger">*</span></label>
+            {{ form.description }}
+            {% for error in form.description.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Qiymət <span class="text-danger">*</span></label>
+            {{ form.price }}
+            {% for error in form.price.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Valyuta</label>
+            {{ form.currency }}
+            {% for error in form.currency.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Region <span class="text-danger">*</span></label>
+            {{ form.region }}
+            {% for error in form.region.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Rayon</label>
+            {{ form.district }}
+            {% for error in form.district.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-12">
+            <label class="form-label">Ünvan detalı</label>
+            {{ form.address_detail }}
+            {% for error in form.address_detail.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Otaq sayı</label>
+            {{ form.rooms }}
+            {% for error in form.rooms.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Sahə (m²) <span class="text-danger">*</span></label>
+            {{ form.area_m2 }}
+            {% for error in form.area_m2.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Mərtəbə <span class="text-danger">*</span></label>
+            {{ form.floor }}
+            {% for error in form.floor.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Ümumi mərtəbə</label>
+            {{ form.total_floors }}
+            {% for error in form.total_floors.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+    </div>
+    <p class="text-muted small mt-2 mb-0"><span class="text-danger">*</span> ilə işarələnmiş xanaların doldurulması mütləqdir.</p>
+
+    <hr class="my-4">
+    <h5 class="fw-bold mb-1">Şəkillər <span class="text-danger">*</span></h5>
+
+    {% if image_formset.non_form_errors %}
+    <div class="evtap-big-warning" role="alert">
+        <span class="evtap-big-warning-icon">&#9888;</span>
+        <div>
+            {% for error in image_formset.non_form_errors %}
+            <div class="evtap-big-warning-text">{{ error }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="evtap-photo-guide mb-3">
+        <strong>Vacib qeyd:</strong> Elan minimum <strong>3 şəkil</strong> olmadan yerləşdirilə bilməz. 3-dən az şəkillə
+        göndərilən elanlar qəbul edilmir. Tövsiyə olaraq aşağıdakıların hamısını əhatə edən şəkillər yükləyin:
+        <ul class="mb-0 mt-1">
+            <li>Evin/mənzilin <strong>bütün otaqları</strong> (salon, mətbəx, yataq otaqları və s.)</li>
+            <li><strong>Giriş hissəsi</strong> (qapı, dəhliz)</li>
+            <li>Binanın və ya mənzilin <strong>uzaqdan (bayır tərəfdən) ümumi görünüşü</strong></li>
+        </ul>
+    </div>
+
+    <p class="text-muted small mb-3">Minimum 3, maksimum 7 şəkil yükləyə bilərsiniz. Şəkil seçdikdən sonra aşağıda çıxan kiçik alətlə kəsiləcək hissəni özünüz seçə bilərsiniz (sürüşdürün və yaxınlaşdırın).</p>
+    {{ image_formset.management_form }}
+    <div class="row g-3">
+        {% for img_form in image_formset %}
+        <div class="col-md-4">
+            <div class="border rounded-3 p-3 evtap-image-slot">
+                {{ img_form.image.label_tag }}
+                {{ img_form.image }}
+                {% for error in img_form.image.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+
+                <div class="evtap-crop-tool mt-2" style="display:none;">
+                    <div class="evtap-crop-viewport">
+                        <img class="evtap-crop-img" alt="">
+                    </div>
+                    <input type="range" class="form-range evtap-crop-zoom mt-2" min="100" max="300" value="100">
+                    <p class="small text-muted mb-0">Şəkli sürüşdürüb, sürgü ilə yaxınlaşdıraraq kəsiləcək hissəni seçin.</p>
+                </div>
+
+                <div class="form-check mt-2">
+                    {{ img_form.is_cover }}
+                    <label class="form-check-label">Əsas şəkil</label>
+                </div>
+                {% if img_form.instance.pk %}
+                <div class="form-check mt-1">
+                    {{ img_form.DELETE }}
+                    <label class="form-check-label">Sil</label>
+                </div>
+                {% endif %}
+                {% for error in img_form.non_field_errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                {% for hidden in img_form.hidden_fields %}{{ hidden }}{% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-evtap-accent mt-4">Elanı göndər</button>
+</form>
+{% endblock %}

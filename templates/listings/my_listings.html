@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Elanlarım — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Elanlarım</h2>
+    <a href="{% url 'listings:listing_create' %}" class="btn btn-evtap-accent">+ Yeni elan</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Başlıq</th>
+                <th>Kateqoriya</th>
+                <th>Qiymət</th>
+                <th>Status</th>
+                <th>Seçilmiş</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for listing in listings %}
+            <tr>
+                <td><a href="{{ listing.get_absolute_url }}">{{ listing.title }}</a></td>
+                <td>{{ listing.category.name }}</td>
+                <td>{{ listing.price }} {{ listing.currency }}</td>
+                <td>
+                    <span class="badge evtap-badge-{{ listing.status }}">{{ listing.get_status_display }}</span>
+                    {% if listing.status == "rejected" and listing.rejection_reason %}
+                    <div class="small text-muted">{{ listing.rejection_reason }}</div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if listing.is_currently_featured %}
+                    <span class="badge evtap-badge-featured">Bəli</span>
+                    {% else %}
+                    <a href="{% url 'promotions:boost' listing.pk %}" class="small evtap-link-accent">Önə çıxar</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'listings:listing_update' listing.pk %}" class="btn btn-sm btn-outline-secondary">Redaktə et</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-muted">Hələ heç bir elan yerləşdirməmisiniz.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

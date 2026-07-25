@@ -1,0 +1,420 @@
+/* EvTap — original stylesheet. Palette and layout deliberately distinct from any real estate portal brand. */
+
+:root {
+  --evtap-primary: #0f4c3a;
+  --evtap-primary-dark: #0a3327;
+  --evtap-accent: #d98e4a;
+  --evtap-accent-dark: #b96f2f;
+  --evtap-sand: #f5ede1;
+  --evtap-ink: #1c2b26;
+}
+
+body {
+  font-family: "Segoe UI", "Manrope", system-ui, -apple-system, sans-serif;
+  background-color: #fbfaf7;
+  color: var(--evtap-ink);
+}
+
+/* Generic input fallback styling for forms that don't carry Bootstrap classes (e.g. built-in auth forms) */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="url"],
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+}
+
+/* Navbar */
+.evtap-navbar {
+  background-color: var(--evtap-primary);
+}
+
+.evtap-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--evtap-accent);
+  color: white;
+  font-weight: 700;
+  border-radius: 0.5rem;
+}
+
+.btn-evtap-accent {
+  background-color: var(--evtap-accent);
+  border-color: var(--evtap-accent);
+  color: white;
+}
+.btn-evtap-accent:hover {
+  background-color: var(--evtap-accent-dark);
+  border-color: var(--evtap-accent-dark);
+  color: white;
+}
+
+.evtap-link-accent {
+  color: var(--evtap-accent-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+.evtap-link-accent:hover {
+  text-decoration: underline;
+}
+
+/* Hero */
+.evtap-hero {
+  background: radial-gradient(circle at top left, var(--evtap-primary) 0%, var(--evtap-primary-dark) 60%, var(--evtap-ink) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.evtap-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(217,142,74,0.15) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(217,142,74,0.15) 25%, transparent 25%);
+  background-size: 60px 60px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.evtap-hero > * {
+  position: relative;
+  z-index: 1;
+}
+.evtap-search-bar input,
+.evtap-search-bar select {
+  border: none;
+}
+
+/* Category cards */
+.evtap-category-card {
+  display: block;
+  text-align: center;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.25rem 0.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.evtap-category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+.evtap-category-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--evtap-sand);
+  color: var(--evtap-primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Listing card */
+.evtap-card {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.evtap-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.evtap-card-image {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background-color: var(--evtap-sand);
+}
+.evtap-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.evtap-placeholder-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--evtap-sand), #e8ddc9);
+  color: var(--evtap-primary);
+  font-weight: 600;
+  text-align: center;
+}
+.evtap-ribbon {
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  background-color: var(--evtap-accent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+/* Card gallery cycling */
+.evtap-card-gallery {
+  cursor: pointer;
+}
+.evtap-card-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.35);
+  color: white;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 2;
+}
+.evtap-card-gallery:hover .evtap-card-nav {
+  opacity: 1;
+}
+.evtap-card-nav-prev { left: 0.5rem; }
+.evtap-card-nav-next { right: 0.5rem; }
+.evtap-card-dots {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+  z-index: 2;
+}
+.evtap-card-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+}
+.evtap-card-dot.active {
+  background: white;
+}
+
+/* Detail-page gallery (bigger, always-visible controls, no click-to-navigate) */
+.evtap-detail-gallery {
+  position: relative;
+  cursor: default;
+}
+.evtap-detail-gallery .evtap-card-nav {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  opacity: 1;
+  background: rgba(0,0,0,0.45);
+}
+.evtap-detail-gallery .evtap-card-nav:hover {
+  background: rgba(0,0,0,0.65);
+}
+.evtap-detail-gallery .evtap-card-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+}
+.evtap-fav-form {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+}
+.evtap-fav-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.9);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.evtap-card-title {
+  font-weight: 600;
+  margin: 0.25rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.evtap-price {
+  color: var(--evtap-primary);
+  font-size: 1.1rem;
+}
+.stretched-card-link {
+  color: inherit;
+}
+
+/* Detail page */
+.evtap-gallery-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.evtap-side-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.evtap-price-lg {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--evtap-primary);
+}
+.evtap-facts {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.evtap-badge-agent {
+  background-color: var(--evtap-primary);
+}
+
+/* Status badges */
+.evtap-badge-pending { background-color: #e0a800; }
+.evtap-badge-approved { background-color: var(--evtap-primary); }
+.evtap-badge-rejected { background-color: #b02a37; }
+.evtap-badge-featured { background-color: var(--evtap-accent); }
+
+/* Image crop tool (listing create/edit form) */
+.evtap-crop-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: #e9ecef;
+  cursor: grab;
+  touch-action: none;
+}
+.evtap-crop-viewport:active {
+  cursor: grabbing;
+}
+.evtap-crop-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  max-height: none;
+  transform-origin: top left;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.evtap-crop-zoom {
+  width: 100%;
+}
+
+/* Mandatory-photo guidance + big warning banner */
+.evtap-photo-guide {
+  background: var(--evtap-sand);
+  border: 1px solid #e2cfa5;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+}
+.evtap-photo-guide ul {
+  padding-left: 1.25rem;
+}
+.evtap-big-warning {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f8d7da;
+  border: 2px solid #b02a37;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.evtap-big-warning-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  color: #b02a37;
+}
+.evtap-big-warning-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #7a1f27;
+}
+
+/* Filters */
+.evtap-filters {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Forms */
+.evtap-form label {
+  font-weight: 600;
+}
+
+/* Promotions / demo payment */
+.evtap-demo-banner {
+  background-color: #fff3cd;
+  border: 1px solid #ffe69c;
+  color: #664d03;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+}
+.evtap-plan-option {
+  display: flex;
+  border: 1px solid #dee2e6;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+.evtap-plan-option:hover {
+  border-color: var(--evtap-accent);
+}
+.evtap-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: var(--evtap-primary);
+  color: white;
+  font-size: 2rem;
+  margin: 0 auto;
+}
+
+/* Footer */
+.evtap-footer {
+  background-color: var(--evtap-ink);
+  color: #d8d8d8;
+}
+.evtap-footer h5, .evtap-footer h6 {
+  color: white;
+}
+.footer-link {
+  color: #b8c2be;
+  text-decoration: none;
+}
+.footer-link:hover {
+  color: white;
+}

@@ -1,0 +1,29 @@
+<footer class="evtap-footer mt-5 py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">EvTap</h5>
+                <p class="small text-muted">Azərbaycanda əmlak axtarışı və elan yerləşdirmə platforması.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6>Kateqoriyalar</h6>
+                <ul class="list-unstyled small">
+                    {% for cat in nav_categories %}
+                    <li><a href="{% url 'listings:category_list' cat.slug %}" class="footer-link">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6>Keçidlər</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="{% url 'listings:listing_create' %}" class="footer-link">Elan yerləşdir</a></li>
+                    <li><a href="{% url 'listings:listing_search' %}" class="footer-link">Bütün elanlar</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="small text-center text-muted mb-0">
+            Bu, təhsil/nümayiş məqsədli layihədir. Bütün elanlar, istifadəçilər və qiymətlər uydurmadır və heç bir real əmlak elan platforması ilə əlaqəli deyil.
+        </p>
+    </div>
+</footer>

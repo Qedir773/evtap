@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Elanı önə çıxar — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-2">Elanı önə çıxar</h2>
+        <p class="text-muted mb-4">"{{ listing.title }}" elanını "Seçilmiş" bölmədə göstərmək üçün bir müddət seçin.</p>
+
+        <div class="evtap-demo-banner mb-4">
+            DEMO — Bu, real ödəniş sistemi deyil, nümayiş məqsədli simulyasiyadır.
+        </div>
+
+        <form method="post" class="evtap-form">
+            {% csrf_token %}
+            {% for option in plan_options %}
+            <label class="evtap-plan-option d-flex justify-content-between align-items-center mb-2">
+                <span>
+                    <input type="radio" name="plan" value="{{ option.value }}" {% if forloop.first %}checked{% endif %}>
+                    {{ option.label }}
+                </span>
+                <span class="fw-bold">{{ option.price }} AZN</span>
+            </label>
+            {% endfor %}
+            {% for error in form.plan.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            <button type="submit" class="btn btn-evtap-accent w-100 mt-3">Davam et</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

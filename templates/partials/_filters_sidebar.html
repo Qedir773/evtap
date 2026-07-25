@@ -1,0 +1,48 @@
+<form method="get" class="evtap-filters">
+    <h6 class="fw-bold mb-3">Filtrlər</h6>
+
+    <div class="mb-3">
+        <label class="form-label small">{{ filter.form.q.label }}</label>
+        {{ filter.form.q }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label small">{{ filter.form.transaction_type.label }}</label>
+        {{ filter.form.transaction_type }}
+    </div>
+
+    {% if not category %}
+    <div class="mb-3">
+        <label class="form-label small">{{ filter.form.category.label }}</label>
+        {{ filter.form.category }}
+    </div>
+    {% endif %}
+
+    <div class="mb-3">
+        <label class="form-label small">Qiymət (AZN)</label>
+        <div class="d-flex gap-2">
+            {{ filter.form.price_min }}
+            {{ filter.form.price_max }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label small">{{ filter.form.rooms.label }}</label>
+        {{ filter.form.rooms }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label small">Sahə (m²)</label>
+        <div class="d-flex gap-2">
+            {{ filter.form.area_min }}
+            {{ filter.form.area_max }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label small">{{ filter.form.region.label }}</label>
+        {{ filter.form.region }}
+    </div>
+
+    <button type="submit" class="btn btn-evtap-accent w-100">Tətbiq et</button>
+</form>

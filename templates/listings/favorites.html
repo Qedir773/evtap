@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Sevimlilər — {{ site_name }}{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-4">Sevimlilər</h2>
+<div class="row g-3">
+    {% for favorite in favorites %}
+        {% with listing=favorite.listing %}
+            {% include "partials/_listing_card.html" %}
+        {% endwith %}
+    {% empty %}
+    <p class="text-muted">Hələ sevimli elanınız yoxdur.</p>
+    {% endfor %}
+</div>
+{% endblock %}

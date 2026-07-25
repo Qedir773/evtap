@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Daxil ol — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <h2 class="fw-bold mb-4">Daxil ol</h2>
+        <form method="post" class="evtap-form">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-evtap-accent w-100">Daxil ol</button>
+        </form>
+        <p class="mt-3 text-center">Hesabınız yoxdur? <a href="{% url 'accounts:register' %}" class="evtap-link-accent">Qeydiyyatdan keçin</a></p>
+    </div>
+</div>
+{% endblock %}

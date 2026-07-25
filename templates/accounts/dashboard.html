@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Hesabım — {{ site_name }}{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-4">Xoş gəlmisiniz, {{ user.username }}</h2>
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="evtap-side-card text-center">
+            <div class="evtap-price-lg">{{ listings_count }}</div>
+            <div class="text-muted">Elanlarım</div>
+            <a href="{% url 'listings:my_listings' %}" class="evtap-link-accent">Bax</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="evtap-side-card text-center">
+            <div class="evtap-price-lg">{{ favorites_count }}</div>
+            <div class="text-muted">Sevimlilər</div>
+            <a href="{% url 'listings:favorites' %}" class="evtap-link-accent">Bax</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="evtap-side-card text-center">
+            <a href="{% url 'listings:listing_create' %}" class="btn btn-evtap-accent">+ Yeni elan</a>
+            <div class="mt-2"><a href="{% url 'accounts:profile' %}" class="evtap-link-accent">Profili redaktə et</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

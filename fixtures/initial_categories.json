@@ -1,0 +1,42 @@
+[
+  {
+    "model": "listings.category",
+    "pk": 1,
+    "fields": {
+      "name": "Mənzil",
+      "slug": "menzil",
+      "icon_css_class": "icon-apartment",
+      "order": 1
+    }
+  },
+  {
+    "model": "listings.category",
+    "pk": 2,
+    "fields": {
+      "name": "Ev/Villa",
+      "slug": "ev-villa",
+      "icon_css_class": "icon-house",
+      "order": 2
+    }
+  },
+  {
+    "model": "listings.category",
+    "pk": 3,
+    "fields": {
+      "name": "Torpaq",
+      "slug": "torpaq",
+      "icon_css_class": "icon-land",
+      "order": 3
+    }
+  },
+  {
+    "model": "listings.category",
+    "pk": 4,
+    "fields": {
+      "name": "Kommersiya",
+      "slug": "kommersiya",
+      "icon_css_class": "icon-commercial",
+      "order": 4
+    }
+  }
+]
