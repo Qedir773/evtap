@@ -24,9 +24,9 @@
                     </div>
                     {% endif %}
                 </div>
-                {% if gallery|length > 1 %}
-                <p class="text-center small text-muted mt-2">{{ gallery|length }} şəkil — hamısına baxmaq üçün oxlara basın</p>
-                {% endif %}
+                <p class="text-center small text-muted mt-2">
+                    {% if gallery|length > 1 %}{{ gallery|length }} şəkil — hamısına baxmaq üçün oxlara basın, {% endif %}böyütmək üçün şəklə klikləyin
+                </p>
                 {% else %}
                 <div class="evtap-placeholder-img evtap-gallery-img rounded-4"><span>{{ listing.category.name }}</span></div>
                 {% endif %}
@@ -84,7 +84,12 @@
             <h6 class="fw-bold">Elanı yerləşdirən</h6>
             <p class="mb-1">{{ listing.owner.get_full_name|default:listing.owner.username }}</p>
             {% if listing.owner.profile.is_agent %}<span class="badge evtap-badge-agent">Agentlik</span>{% endif %}
-            {% if listing.owner.profile.phone_number %}<p class="small text-muted">{{ listing.owner.profile.phone_number }}</p>{% endif %}
+            {% if listing.owner.profile.phone_number %}
+            <p class="small text-muted mb-1"><span class="evtap-icon">&#128222;</span> <a href="tel:{{ listing.owner.profile.phone_number }}">{{ listing.owner.profile.phone_number }}</a></p>
+            {% endif %}
+            {% if listing.owner.email %}
+            <p class="small text-muted mb-1"><span class="evtap-icon">&#9993;</span> <a href="mailto:{{ listing.owner.email }}">{{ listing.owner.email }}</a></p>
+            {% endif %}
 
             {% if user == listing.owner %}
             <hr>

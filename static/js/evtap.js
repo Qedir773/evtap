@@ -30,9 +30,65 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  const lightbox = document.createElement("div");
+  lightbox.className = "evtap-lightbox";
+  lightbox.innerHTML =
+    '<button type="button" class="evtap-lightbox-close" aria-label="Bağla">&times;</button>' +
+    '<button type="button" class="evtap-card-nav evtap-card-nav-prev" aria-label="Əvvəlki şəkil">&#8249;</button>' +
+    '<img class="evtap-lightbox-img" src="" alt="">' +
+    '<button type="button" class="evtap-card-nav evtap-card-nav-next" aria-label="Növbəti şəkil">&#8250;</button>';
+  document.body.appendChild(lightbox);
+  const lightboxImg = lightbox.querySelector(".evtap-lightbox-img");
+  let lightboxImages = [];
+  let lightboxIndex = 0;
+
+  function renderLightbox() {
+    lightboxImg.src = lightboxImages[lightboxIndex];
+  }
+
+  function openLightbox(images, startIndex) {
+    if (!images.length) return;
+    lightboxImages = images;
+    lightboxIndex = startIndex;
+    renderLightbox();
+    lightbox.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  function goLightbox(delta) {
+    if (lightboxImages.length < 2) return;
+    lightboxIndex = (lightboxIndex + delta + lightboxImages.length) % lightboxImages.length;
+    renderLightbox();
+  }
+
+  lightbox.querySelector(".evtap-lightbox-close").addEventListener("click", closeLightbox);
+  lightbox.querySelector(".evtap-card-nav-prev").addEventListener("click", function () {
+    goLightbox(-1);
+  });
+  lightbox.querySelector(".evtap-card-nav-next").addEventListener("click", function () {
+    goLightbox(1);
+  });
+  lightbox.addEventListener("click", function (event) {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+  document.addEventListener("keydown", function (event) {
+    if (!lightbox.classList.contains("active")) return;
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowLeft") goLightbox(-1);
+    if (event.key === "ArrowRight") goLightbox(1);
+  });
+
   document.querySelectorAll(".evtap-card-gallery, .evtap-detail-gallery").forEach(function (gallery) {
     const raw = gallery.getAttribute("data-images");
     const detailUrl = gallery.getAttribute("data-detail-url");
+    const isDetailGallery = gallery.classList.contains("evtap-detail-gallery");
     const images = raw ? raw.split("|").filter(Boolean) : [];
     const imgEl = gallery.querySelector(".evtap-gallery-current");
     const dots = gallery.querySelectorAll(".evtap-card-dot");
@@ -76,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       if (detailUrl) {
         window.location.href = detailUrl;
+      } else if (isDetailGallery) {
+        openLightbox(images, index);
       }
     });
   });

@@ -233,6 +233,60 @@ select {
   width: 0.55rem;
   height: 0.55rem;
 }
+.evtap-detail-gallery .evtap-gallery-current {
+  cursor: zoom-in;
+}
+
+/* Lightbox (full-size image viewer, opened from the detail gallery) */
+.evtap-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.9);
+  padding: 2rem;
+}
+.evtap-lightbox.active {
+  display: flex;
+}
+.evtap-lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.5rem;
+}
+.evtap-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.evtap-lightbox-close:hover {
+  background: rgba(255,255,255,0.3);
+}
+.evtap-lightbox .evtap-card-nav {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.75rem;
+  background: rgba(255,255,255,0.15);
+  position: fixed;
+  top: 50%;
+}
+.evtap-lightbox .evtap-card-nav:hover {
+  background: rgba(255,255,255,0.3);
+}
+.evtap-lightbox .evtap-card-nav-prev { left: 1.25rem; }
+.evtap-lightbox .evtap-card-nav-next { right: 1.25rem; }
 .evtap-fav-form {
   position: absolute;
   top: 0.5rem;
