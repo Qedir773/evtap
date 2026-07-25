@@ -103,6 +103,12 @@ STORAGES = {
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# Used to build the public delivery URL for the watermark logo, independent of
+# which storage backend handles listing photos (FileSystemStorage in dev,
+# Cloudinary in prod) — see listings.models.ListingImage._apply_watermark.
+CLOUDINARY_CLOUD_NAME = env("CLOUDINARY_CLOUD_NAME", default=None)
+WATERMARK_LOGO_PUBLIC_ID = "site/watermark-logo"
+
 FIXTURE_DIRS = [BASE_DIR / "fixtures"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

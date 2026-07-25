@@ -1,16 +1,51 @@
 import json
 from io import BytesIO
 
+import requests
 from django.conf import settings
+from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 LISTING_IMAGE_SIZE = (1200, 900)  # 4:3 yatay (landscape) format
+
+WATERMARK_CACHE_KEY = "site-watermark-logo-bytes"
+WATERMARK_CACHE_TIMEOUT = 3600  # saniyə
+WATERMARK_WIDTH_RATIO = 0.14  # elan şəklinin enindən nisbət
+# Qalereya görünüşü (16:9) 4:3 şəkli mərkəzdən kəsir (yuxarı/aşağı ~12.5%).
+# Loqo bu "təhlükəsiz zona"dan kənara düşməsin deyə marginlər nisbi seçilib.
+WATERMARK_MARGIN_X_RATIO = 0.03
+WATERMARK_MARGIN_Y_RATIO = 0.15
+
+
+def _fetch_watermark_logo_bytes():
+    """Sayt logosunu Cloudinary-dən çəkir və prosesin yaddaşında keşləyir."""
+    cloud_name = getattr(settings, "CLOUDINARY_CLOUD_NAME", None)
+    if not cloud_name:
+        return None
+
+    logo_bytes = cache.get(WATERMARK_CACHE_KEY)
+    if logo_bytes is not None:
+        return logo_bytes
+
+    url = (
+        f"https://res.cloudinary.com/{cloud_name}/image/upload/"
+        f"{settings.WATERMARK_LOGO_PUBLIC_ID}.png"
+    )
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    logo_bytes = response.content
+    cache.set(WATERMARK_CACHE_KEY, logo_bytes, WATERMARK_CACHE_TIMEOUT)
+    return logo_bytes
 
 
 class Category(models.Model):
@@ -195,11 +230,38 @@ class ListingImage(models.Model):
                 box = (0, top, width, top + new_height)
 
         image = image.crop(box).resize(LISTING_IMAGE_SIZE, Image.LANCZOS)
+        image = self._apply_watermark(image)
 
         buffer = BytesIO()
-        image.save(buffer, format="JPEG", quality=88)
+        image.save(buffer, format="JPEG", quality=95, subsampling=0)
         name = self.image.name.rsplit(".", 1)[0] + ".jpg"
         self.image.save(name, ContentFile(buffer.getvalue()), save=False)
+
+    @staticmethod
+    def _apply_watermark(image):
+        """Sayt logosunu şəklin aşağı-sağ küncünə şəffaf watermark kimi əlavə edir."""
+        logo_bytes = _fetch_watermark_logo_bytes()
+        if not logo_bytes:
+            return image
+
+        try:
+            logo = Image.open(BytesIO(logo_bytes)).convert("RGBA")
+        except UnidentifiedImageError:
+            return image
+
+        target_width = round(image.width * WATERMARK_WIDTH_RATIO)
+        target_height = round(logo.height * (target_width / logo.width))
+        logo = logo.resize((target_width, target_height), Image.LANCZOS)
+
+        margin_x = round(image.width * WATERMARK_MARGIN_X_RATIO)
+        margin_y = round(image.height * WATERMARK_MARGIN_Y_RATIO)
+        position = (
+            image.width - target_width - margin_x,
+            image.height - target_height - margin_y,
+        )
+        watermarked = image.convert("RGBA")
+        watermarked.paste(logo, position, mask=logo)
+        return watermarked.convert("RGB")
 
     @staticmethod
     def _parse_crop_box(crop_box_json, width, height):
