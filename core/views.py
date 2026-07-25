@@ -1,7 +1,10 @@
 from django.views.generic import TemplateView
 
+from listings.filters import SORT_CHOICES
 from listings.forms import ListingSearchForm
 from listings.models import Category, Listing
+
+_VALID_SORTS = {value for value, _label in SORT_CHOICES}
 
 
 class HomeView(TemplateView):
@@ -12,7 +15,13 @@ class HomeView(TemplateView):
         context["search_form"] = ListingSearchForm()
         context["categories"] = Category.objects.all()
         context["featured_listings"] = Listing.objects.currently_featured().prefetch_related("images")[:8]
+
+        sort = self.request.GET.get("sort")
+        if sort not in _VALID_SORTS:
+            sort = "-created_at"
+        context["current_sort"] = sort
+        context["sort_choices"] = SORT_CHOICES
         context["latest_listings"] = (
-            Listing.objects.approved().order_by("-created_at").prefetch_related("images")[:12]
+            Listing.objects.approved().order_by(sort).prefetch_related("images")[:12]
         )
         return context

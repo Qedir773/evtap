@@ -30,9 +30,19 @@
 </div>
 {% endif %}
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <h4 class="fw-bold mb-0">Ən son elanlar</h4>
     <a href="{% url 'listings:listing_search' %}" class="evtap-link-accent">Hamısına bax &rarr;</a>
+</div>
+<div class="evtap-sort-bar d-flex justify-content-end mb-3">
+    <form method="get" class="d-flex align-items-center gap-2">
+        <label class="small text-muted mb-0" for="id_home_sort">Sırala:</label>
+        <select name="sort" id="id_home_sort" class="form-select form-select-sm evtap-sort-select">
+            {% for value, label in sort_choices %}
+            <option value="{{ value }}" {% if value == current_sort %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </form>
 </div>
 <div class="row g-3">
     {% for listing in latest_listings %}
@@ -42,11 +52,7 @@
     {% endfor %}
 </div>
 
-<div class="text-center mt-5">
-    <a href="{% url 'admin:index' %}" class="evtap-admin-badge">Admin girişi</a>
-</div>
-
-<div class="evtap-creator-block text-center mt-3">
+<div class="evtap-creator-block text-center mt-5">
     <p class="evtap-creator-name mb-1">Saytın yaradıcısı: Vahidov Qədir</p>
     <p class="evtap-creator-contact mb-0">Əlaqə nömrəsi: 077 330 39 33</p>
 </div>

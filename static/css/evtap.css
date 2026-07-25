@@ -468,23 +468,6 @@ select {
   width: auto;
 }
 
-/* Admin login badge (home page) */
-.evtap-admin-badge {
-  display: inline-block;
-  padding: 0.4rem 1.1rem;
-  border-radius: 2rem;
-  background-color: var(--evtap-sand);
-  color: var(--evtap-primary);
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-decoration: none;
-  border: 1px solid #e2cfa5;
-}
-.evtap-admin-badge:hover {
-  background-color: #e8ddc9;
-  color: var(--evtap-primary-dark);
-}
-
 /* Creator block (home page) */
 .evtap-creator-block {
   background: radial-gradient(circle at top left, var(--evtap-primary) 0%, var(--evtap-primary-dark) 60%, var(--evtap-ink) 100%);

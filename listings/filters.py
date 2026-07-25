@@ -7,6 +7,13 @@ _TEXT = forms.TextInput(attrs={"class": "form-control form-control-sm"})
 _NUMBER = forms.NumberInput(attrs={"class": "form-control form-control-sm"})
 _SELECT = forms.Select(attrs={"class": "form-select form-select-sm"})
 
+SORT_CHOICES = (
+    ("-created_at", "Ən son əlavə edilənlər"),
+    ("price", "Əvvəlcə ucuz"),
+    ("-price", "Əvvəlcə bahalı"),
+    ("-views_count", "Ən çox baxılan"),
+)
+
 
 class _SortSelect(forms.Select):
     """OrderingFilter requires a widget *class* (it wraps it for CSV support),
@@ -40,12 +47,7 @@ class ListingFilter(django_filters.FilterSet):
             ("price", "price"),
             ("views_count", "views_count"),
         ),
-        choices=(
-            ("-created_at", "Ən son əlavə edilənlər"),
-            ("price", "Əvvəlcə ucuz"),
-            ("-price", "Əvvəlcə bahalı"),
-            ("-views_count", "Ən çox baxılan"),
-        ),
+        choices=SORT_CHOICES,
         empty_label=None,
         widget=_SortSelect,
     )

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from .models import Profile
 
-USERNAME_MAX_LENGTH = 5
+USERNAME_MAX_LENGTH = 12
 
 
 class RegisterForm(UserCreationForm):
