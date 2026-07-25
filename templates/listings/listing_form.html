@@ -113,6 +113,9 @@
         {% for img_form in image_formset %}
         <div class="col-md-4">
             <div class="border rounded-3 p-3 evtap-image-slot">
+                {% if img_form.instance.pk and img_form.instance.display_url %}
+                <img src="{{ img_form.instance.display_url }}" alt="" class="img-fluid rounded-3 mb-2">
+                {% endif %}
                 {{ img_form.image.label_tag }}
                 {{ img_form.image }}
                 {% for error in img_form.image.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
@@ -132,7 +135,7 @@
                 {% if img_form.instance.pk %}
                 <div class="form-check mt-1">
                     {{ img_form.DELETE }}
-                    <label class="form-check-label">Sil</label>
+                    <label class="form-check-label text-danger fw-semibold">Bu şəkli sil</label>
                 </div>
                 {% endif %}
                 {% for error in img_form.non_field_errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}

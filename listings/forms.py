@@ -78,7 +78,7 @@ class ListingImageForm(forms.ModelForm):
         model = ListingImage
         fields = ["image", "is_cover"]
         widgets = {
-            "image": forms.ClearableFileInput(
+            "image": forms.FileInput(
                 attrs={"class": "form-control evtap-crop-input", "accept": "image/*"}
             ),
             "is_cover": forms.CheckboxInput(attrs={"class": "form-check-input"}),
@@ -96,10 +96,16 @@ class ListingImageForm(forms.ModelForm):
 
 MIN_LISTING_IMAGES = 3
 
+
+class BaseListingImageFormSet(forms.BaseInlineFormSet):
+    deletion_widget = forms.CheckboxInput(attrs={"class": "form-check-input"})
+
+
 ListingImageFormSet = inlineformset_factory(
     Listing,
     ListingImage,
     form=ListingImageForm,
+    formset=BaseListingImageFormSet,
     extra=MAX_LISTING_IMAGES,
     max_num=MAX_LISTING_IMAGES,
     validate_max=True,
