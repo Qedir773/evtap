@@ -8,7 +8,7 @@
         {% include "partials/_filters_sidebar.html" %}
     </div>
     <div class="col-lg-9">
-        <p class="text-muted">{{ page_obj.paginator.count }} elan tapıldı</p>
+        {% include "partials/_sort_bar.html" %}
         <div class="row g-3">
             {% for listing in listings %}
                 {% include "partials/_listing_card.html" %}

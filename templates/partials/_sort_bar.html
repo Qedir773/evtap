@@ -1,0 +1,12 @@
+<div class="evtap-sort-bar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <p class="text-muted mb-0">{{ page_obj.paginator.count }} elan tapıldı</p>
+    <form method="get" class="d-flex align-items-center gap-2">
+        {% for key, value in request.GET.items %}
+            {% if key != "sort" and key != "page" %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endif %}
+        {% endfor %}
+        <label class="small text-muted mb-0" for="id_sort">Sırala:</label>
+        {{ filter.form.sort }}
+    </form>
+</div>

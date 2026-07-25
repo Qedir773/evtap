@@ -42,8 +42,12 @@
     {% endfor %}
 </div>
 
-<div class="text-center text-muted small mt-5">
-    <p class="mb-0">Saytın yaradıcısı: Vahidov Qədir</p>
-    <p class="mb-0">Əlaqə nömrəsi: 077 330 39 33</p>
+<div class="text-center mt-5">
+    <a href="{% url 'admin:index' %}" class="evtap-admin-badge">Admin girişi</a>
+</div>
+
+<div class="evtap-creator-block text-center mt-3">
+    <p class="evtap-creator-name mb-1">Saytın yaradıcısı: Vahidov Qədir</p>
+    <p class="evtap-creator-contact mb-0">Əlaqə nömrəsi: 077 330 39 33</p>
 </div>
 {% endblock %}

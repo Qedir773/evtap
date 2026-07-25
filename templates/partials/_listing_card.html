@@ -38,6 +38,7 @@
                 <div class="small text-muted mt-1">
                     {% if listing.rooms %}{{ listing.rooms }} otaq · {% endif %}{{ listing.area_m2 }} m²{% if listing.floor %} · {{ listing.floor }}/{{ listing.total_floors }} mərtəbə{% endif %}
                 </div>
+                <div class="small text-muted evtap-card-date mt-1">Əlavə edilib: {{ listing.created_at|date:"d.m.Y" }}</div>
             </div>
         </a>
     </div>
