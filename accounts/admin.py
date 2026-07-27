@@ -13,6 +13,11 @@ class ProfileInline(admin.StackedInline):
 
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline,)
+    list_display = UserAdmin.list_display + ("token_balance",)
+
+    @admin.display(description="Token balansı")
+    def token_balance(self, obj):
+        return getattr(obj.profile, "token_balance", "—")
 
 
 admin.site.unregister(User)

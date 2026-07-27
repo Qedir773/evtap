@@ -49,14 +49,32 @@ class PromoCodeAdmin(admin.ModelAdmin):
 @admin.register(PromotionPricing)
 class PromotionPricingAdmin(admin.ModelAdmin):
     list_display = ("service_type", "token_cost")
+    list_display_links = ("service_type",)
+    list_editable = ("token_cost",)
 
 
 @admin.register(Profile)
 class ProfileTokenAdmin(admin.ModelAdmin):
     list_display = ("user", "token_balance", "is_agent", "agency_name")
+    list_display_links = ("user",)
+    list_editable = ("token_balance",)
     search_fields = ("user__username", "user__email")
     readonly_fields = ("user",)
     actions = ["add_tokens_action", "subtract_tokens_action", "reset_balance_action"]
+
+    def save_model(self, request, obj, form, change):
+        delta = 0
+        if change and "token_balance" in form.changed_data:
+            old_balance = Profile.objects.get(pk=obj.pk).token_balance
+            delta = obj.token_balance - old_balance
+        super().save_model(request, obj, form, change)
+        if delta:
+            TokenTransaction.objects.create(
+                user=obj.user,
+                amount=delta,
+                transaction_type=TokenTransaction.Type.ADMIN_ADD,
+                description="Admin: balans birbaşa redaktə edildi",
+            )
 
     def add_tokens_action(self, request, queryset):
         return self._amount_intermediate(request, queryset, mode="add")
