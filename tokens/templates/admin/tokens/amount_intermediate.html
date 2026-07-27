@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>{% if mode == "add" %}Token əlavə et{% else %}Token çıx{% endif %}</h1>
+
+<p>Seçilmiş istifadəçilər üçün miqdarı daxil edin:</p>
+<ul>
+    {% for profile in profiles %}
+    <li>{{ profile.user.username }} — cari balans: {{ profile.token_balance }}</li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% for profile in profiles %}
+    <input type="hidden" name="{{ action_checkbox_name }}" value="{{ profile.pk }}">
+    {% endfor %}
+    <input type="hidden" name="action" value="{{ action_name }}">
+    <input type="submit" name="apply" value="Təsdiqlə" class="default">
+    <a href="." class="button cancel-link">Ləğv et</a>
+</form>
+{% endblock %}

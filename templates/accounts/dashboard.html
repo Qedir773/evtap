@@ -3,24 +3,60 @@
 {% block content %}
 <h2 class="fw-bold mb-4">Xoş gəlmisiniz, {{ user.username }}</h2>
 <div class="row g-3">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="evtap-side-card text-center">
             <div class="evtap-price-lg">{{ listings_count }}</div>
             <div class="text-muted">Elanlarım</div>
             <a href="{% url 'listings:my_listings' %}" class="evtap-link-accent">Bax</a>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="evtap-side-card text-center">
             <div class="evtap-price-lg">{{ favorites_count }}</div>
             <div class="text-muted">Sevimlilər</div>
             <a href="{% url 'listings:favorites' %}" class="evtap-link-accent">Bax</a>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <div class="evtap-side-card text-center">
+            <div class="evtap-price-lg">{{ user_token_balance }}</div>
+            <div class="text-muted">Token balansı</div>
+        </div>
+    </div>
+    <div class="col-md-3">
         <div class="evtap-side-card text-center">
             <a href="{% url 'listings:listing_create' %}" class="btn btn-evtap-accent">+ Yeni elan</a>
             <div class="mt-2"><a href="{% url 'accounts:profile' %}" class="evtap-link-accent">Profili redaktə et</a></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-6">
+        <div class="evtap-side-card">
+            <h5 class="fw-bold">Promokod daxil et</h5>
+            <form method="post" action="{% url 'tokens:redeem_promocode' %}" class="d-flex gap-2">
+                {% csrf_token %}
+                {{ promo_form.code }}
+                <button type="submit" class="btn btn-evtap-accent text-nowrap">Aktivləşdir</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="evtap-side-card">
+            <h5 class="fw-bold">Son token əməliyyatları</h5>
+            {% if recent_token_transactions %}
+            <ul class="list-unstyled mb-0 small">
+                {% for tx in recent_token_transactions %}
+                <li class="d-flex justify-content-between border-bottom py-1">
+                    <span>{{ tx.get_transaction_type_display }}{% if tx.description %} — {{ tx.description }}{% endif %}</span>
+                    <span class="{% if tx.amount > 0 %}text-success{% else %}text-danger{% endif %} fw-semibold">{{ tx.amount|stringformat:"+d" }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="text-muted small">Hələ heç bir əməliyyat yoxdur.</div>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -119,6 +119,11 @@ class Listing(models.Model):
     rejection_reason = models.TextField(blank=True)
     is_featured = models.BooleanField(default=False)
     featured_until = models.DateTimeField(null=True, blank=True)
+    is_vip = models.BooleanField(default=False)
+    vip_expires_at = models.DateTimeField(null=True, blank=True)
+    is_urgent = models.BooleanField(default=False)
+    urgent_expires_at = models.DateTimeField(null=True, blank=True)
+    last_bumped_at = models.DateTimeField(null=True, blank=True)
     views_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -128,7 +133,7 @@ class Listing(models.Model):
     class Meta:
         verbose_name = "Elan"
         verbose_name_plural = "Elanlar"
-        ordering = ["-is_featured", "-created_at"]
+        ordering = ["-is_featured", "-is_vip", "-is_urgent", "-last_bumped_at", "-created_at"]
         indexes = [
             models.Index(fields=["status", "category"]),
             models.Index(fields=["status", "transaction_type"]),
@@ -157,6 +162,18 @@ class Listing(models.Model):
     def is_currently_featured(self):
         return bool(
             self.is_featured and self.featured_until and self.featured_until >= timezone.now()
+        )
+
+    @property
+    def is_currently_vip(self):
+        return bool(
+            self.is_vip and self.vip_expires_at and self.vip_expires_at >= timezone.now()
+        )
+
+    @property
+    def is_currently_urgent(self):
+        return bool(
+            self.is_urgent and self.urgent_expires_at and self.urgent_expires_at >= timezone.now()
         )
 
     @property

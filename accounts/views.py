@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView
 
+from tokens.forms import PromoCodeRedeemForm
+
 from .forms import ProfileForm, RegisterForm
 from .models import Profile
 
@@ -27,6 +29,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["listings_count"] = self.request.user.listings.count()
         context["favorites_count"] = self.request.user.favorites.count()
+        context["promo_form"] = PromoCodeRedeemForm()
+        context["recent_token_transactions"] = self.request.user.token_transactions.all()[:10]
         return context
 
 

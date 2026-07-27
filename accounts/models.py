@@ -10,6 +10,7 @@ class Profile(models.Model):
     is_agent = models.BooleanField(default=False)
     agency_name = models.CharField(max_length=150, blank=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    token_balance = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = "Profil"

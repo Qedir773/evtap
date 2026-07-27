@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "accounts",
     "listings",
     "promotions",
+    "tokens",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.site_context",
+                "tokens.context_processors.token_context",
             ],
         },
     },
