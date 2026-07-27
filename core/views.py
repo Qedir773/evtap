@@ -1,5 +1,7 @@
 from django.views.generic import TemplateView
 
+from django.db.models import F
+
 from listings.filters import SORT_CHOICES
 from listings.forms import ListingSearchForm
 from listings.models import Category, Listing
@@ -22,6 +24,8 @@ class HomeView(TemplateView):
         context["current_sort"] = sort
         context["sort_choices"] = SORT_CHOICES
         context["latest_listings"] = (
-            Listing.objects.approved().order_by(sort).prefetch_related("images")[:12]
+            Listing.objects.approved()
+            .order_by("-is_vip", "-is_urgent", F("last_bumped_at").desc(nulls_last=True), sort)
+            .prefetch_related("images")[:12]
         )
         return context

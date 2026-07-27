@@ -131,7 +131,12 @@ class Listing(models.Model):
     class Meta:
         verbose_name = "Elan"
         verbose_name_plural = "Elanlar"
-        ordering = ["-is_vip", "-is_urgent", "-last_bumped_at", "-created_at"]
+        ordering = [
+            "-is_vip",
+            "-is_urgent",
+            models.F("last_bumped_at").desc(nulls_last=True),
+            "-created_at",
+        ]
         indexes = [
             models.Index(fields=["status", "category"]),
             models.Index(fields=["status", "transaction_type"]),

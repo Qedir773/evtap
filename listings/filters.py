@@ -1,7 +1,11 @@
 from django import forms
+from django.db.models import F
 import django_filters
+from django_filters.constants import EMPTY_VALUES
 
 from .models import Category, Listing
+
+PRIORITY_ORDERING = ("-is_vip", "-is_urgent", F("last_bumped_at").desc(nulls_last=True))
 
 _TEXT = forms.TextInput(attrs={"class": "form-control form-control-sm"})
 _NUMBER = forms.NumberInput(attrs={"class": "form-control form-control-sm"})
@@ -13,6 +17,18 @@ SORT_CHOICES = (
     ("-price", "Əvvəlcə bahalı"),
     ("-views_count", "Ən çox baxılan"),
 )
+
+
+class PriorityOrderingFilter(django_filters.OrderingFilter):
+    """Seçilmiş sıralamadan asılı olmayaraq VIP/təcili/irəli-çəkilmiş elanları yuxarıda saxlayır."""
+
+    def filter(self, qs, value):
+        if value in EMPTY_VALUES:
+            return qs
+        ordering = [
+            self.get_ordering_value(param) for param in value if param not in EMPTY_VALUES
+        ]
+        return qs.order_by(*PRIORITY_ORDERING, *ordering)
 
 
 class _SortSelect(forms.Select):
@@ -41,7 +57,7 @@ class ListingFilter(django_filters.FilterSet):
     rooms = django_filters.NumberFilter(field_name="rooms", lookup_expr="exact", widget=_NUMBER)
     area_min = django_filters.NumberFilter(field_name="area_m2", lookup_expr="gte", widget=_NUMBER)
     area_max = django_filters.NumberFilter(field_name="area_m2", lookup_expr="lte", widget=_NUMBER)
-    sort = django_filters.OrderingFilter(
+    sort = PriorityOrderingFilter(
         fields=(
             ("created_at", "created_at"),
             ("price", "price"),
