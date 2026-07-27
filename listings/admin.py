@@ -23,10 +23,11 @@ class ListingAdmin(admin.ModelAdmin):
         "price",
         "region",
         "status_badge",
-        "is_featured",
+        "is_vip",
+        "is_urgent",
         "created_at",
     )
-    list_filter = ("status", "category", "transaction_type", "region", "is_featured")
+    list_filter = ("status", "category", "transaction_type", "region", "is_vip", "is_urgent")
     search_fields = ("title", "description", "district")
     readonly_fields = ("views_count", "created_at", "updated_at", "owner")
     inlines = [ListingImageInline]

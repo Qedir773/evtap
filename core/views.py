@@ -14,7 +14,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["search_form"] = ListingSearchForm()
         context["categories"] = Category.objects.all()
-        context["featured_listings"] = Listing.objects.currently_featured().prefetch_related("images")[:8]
+        context["vip_listings"] = Listing.objects.currently_vip().prefetch_related("images")[:8]
 
         sort = self.request.GET.get("sort")
         if sort not in _VALID_SORTS:

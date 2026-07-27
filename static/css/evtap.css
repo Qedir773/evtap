@@ -47,6 +47,18 @@ select {
   border-radius: 0.5rem;
 }
 
+.evtap-token-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--evtap-accent);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+}
+
 .btn-evtap-accent {
   background-color: var(--evtap-accent);
   border-color: var(--evtap-accent);
@@ -164,6 +176,10 @@ select {
   font-weight: 700;
   padding: 0.25rem 0.75rem;
   border-radius: 0 0.5rem 0.5rem 0;
+}
+.evtap-ribbon-urgent {
+  top: 2.5rem;
+  background-color: #dc3545;
 }
 
 /* Card gallery cycling */
@@ -349,7 +365,6 @@ select {
 .evtap-badge-pending { background-color: #e0a800; }
 .evtap-badge-approved { background-color: var(--evtap-primary); }
 .evtap-badge-rejected { background-color: #b02a37; }
-.evtap-badge-featured { background-color: var(--evtap-accent); }
 
 /* Image crop tool (listing create/edit form) */
 .evtap-crop-viewport {
@@ -423,38 +438,6 @@ select {
 /* Forms */
 .evtap-form label {
   font-weight: 600;
-}
-
-/* Promotions / demo payment */
-.evtap-demo-banner {
-  background-color: #fff3cd;
-  border: 1px solid #ffe69c;
-  color: #664d03;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-}
-.evtap-plan-option {
-  display: flex;
-  border: 1px solid #dee2e6;
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-}
-.evtap-plan-option:hover {
-  border-color: var(--evtap-accent);
-}
-.evtap-success-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: var(--evtap-primary);
-  color: white;
-  font-size: 2rem;
-  margin: 0 auto;
 }
 
 /* Sort bar */

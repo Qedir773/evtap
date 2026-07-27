@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     "core",
     "accounts",
     "listings",
-    "promotions",
     "tokens",
 ]
 

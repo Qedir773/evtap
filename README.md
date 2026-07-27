@@ -29,13 +29,11 @@ Sonra `http://127.0.0.1:8000/` ünvanına daxil olun.
 
 ## Əsas axınlar
 
-- Qeydiyyat → Elan yerləşdir → Admin təsdiqi → Elan önə çıxar (DEMO ödəniş) → Sevimlilərə əlavə et.
+- Qeydiyyat (20 pulsuz token bonusu) → Elan yerləşdir → Admin təsdiqi → Token ilə İrəli çək/VIP/Təcili et → Sevimlilərə əlavə et.
 - Bütün elan/qiymət/istifadəçi verisi `core/management/commands/seed_data.py` tərəfindən uydurulur.
 
 ## Texniki qeydlər
 
 - Stack: Django 6, django-filter, Pillow, django-environ, Bootstrap 5 (CDN) + orijinal `evtap.css`.
-- App strukturu: `core`, `accounts`, `listings`, `promotions` (promosyon/DEMO ödəniş məntiqi qəsdən
-  ayrı saxlanılıb ki, real ödəniş inteqrasiyasına keçid asan olsun).
-- `promotions` app-ında heç bir real ödəniş provayderi yoxdur — hər şey `Promotion` modelində
-  simulyasiya olunur.
+- App strukturu: `core`, `accounts`, `listings`, `tokens` (token balansı, promokod, elan
+  təşviqi — Bump/VIP/Təcili — məntiqi ayrı app-da saxlanılıb).

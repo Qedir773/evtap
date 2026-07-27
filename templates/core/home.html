@@ -19,12 +19,12 @@
     {% endfor %}
 </div>
 
-{% if featured_listings %}
+{% if vip_listings %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold mb-0">Seçilmiş elanlar</h4>
+    <h4 class="fw-bold mb-0">VIP elanlar</h4>
 </div>
 <div class="row g-3 mb-5">
-    {% for listing in featured_listings %}
+    {% for listing in vip_listings %}
         {% include "partials/_listing_card.html" %}
     {% endfor %}
 </div>

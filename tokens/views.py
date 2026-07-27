@@ -31,6 +31,11 @@ class RedeemPromoCodeView(LoginRequiredMixin, View):
         return redirect("accounts:dashboard")
 
 
+def _back_to(request, listing):
+    next_url = request.META.get("HTTP_REFERER") or listing.get_absolute_url()
+    return redirect(next_url)
+
+
 class BumpListingView(LoginRequiredMixin, OwnerRequiredMixin, View):
     def post(self, request, pk):
         listing = get_object_or_404(Listing, pk=pk)
@@ -39,7 +44,7 @@ class BumpListingView(LoginRequiredMixin, OwnerRequiredMixin, View):
             messages.success(request, "Elan irəli çəkildi.")
         except services.InsufficientBalanceError as exc:
             messages.error(request, str(exc))
-        return redirect("listings:my_listings")
+        return _back_to(request, listing)
 
 
 class ActivateVipView(LoginRequiredMixin, OwnerRequiredMixin, View):
@@ -53,7 +58,7 @@ class ActivateVipView(LoginRequiredMixin, OwnerRequiredMixin, View):
             messages.error(request, str(exc))
         except ValueError as exc:
             messages.error(request, str(exc))
-        return redirect("listings:my_listings")
+        return _back_to(request, listing)
 
 
 class ActivateUrgentView(LoginRequiredMixin, OwnerRequiredMixin, View):
@@ -64,4 +69,4 @@ class ActivateUrgentView(LoginRequiredMixin, OwnerRequiredMixin, View):
             messages.success(request, "Elan təcili olaraq işarələndi.")
         except services.InsufficientBalanceError as exc:
             messages.error(request, str(exc))
-        return redirect("listings:my_listings")
+        return _back_to(request, listing)

@@ -94,7 +94,19 @@
             {% if user == listing.owner %}
             <hr>
             <a href="{% url 'listings:listing_update' listing.pk %}" class="btn btn-outline-secondary w-100 mb-2">Elanı redaktə et</a>
-            <a href="{% url 'promotions:boost' listing.pk %}" class="btn btn-evtap-accent w-100">Elanı önə çıxar (Boost)</a>
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small text-muted">Token balansınız</span>
+                <span class="fw-bold">{{ user_token_balance }}</span>
+            </div>
+            {% if listing.is_currently_vip %}<span class="badge bg-warning text-dark me-1">VIP aktivdir</span>{% endif %}
+            {% if listing.is_currently_urgent %}<span class="badge bg-danger">Təcili aktivdir</span>{% endif %}
+
+            <div class="d-grid gap-2 mt-2">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bumpModal">İrəli çək</button>
+                <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#vipModal">VIP et</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#urgentModal">Təcili et</button>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -106,6 +118,92 @@
     {% for listing in similar_listings %}
         {% include "partials/_listing_card.html" %}
     {% endfor %}
+</div>
+{% endif %}
+
+{% if user == listing.owner %}
+<div class="modal fade" id="bumpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'tokens:bump' listing.pk %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">İrəli çək</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bu elanı indi irəli çəkmək istəyirsiniz? Bu, <strong>{{ promotion_pricing.bump }} token</strong> xərcləyəcək.</p>
+                    {% if user_token_balance < promotion_pricing.bump %}
+                    <div class="alert alert-warning mb-0">Balansınız kifayət etmir.</div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Ləğv et</button>
+                    <button type="submit" class="btn btn-evtap-accent" {% if user_token_balance < promotion_pricing.bump %}disabled{% endif %}>Təsdiqlə</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="vipModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'tokens:activate_vip' listing.pk %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">VIP et</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bu elan üçün müddət seçin:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="service_type" value="vip_7" id="vip7" checked>
+                        <label class="form-check-label" for="vip7">7 gün — {{ promotion_pricing.vip_7 }} token</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="service_type" value="vip_10" id="vip10">
+                        <label class="form-check-label" for="vip10">10 gün — {{ promotion_pricing.vip_10 }} token</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="service_type" value="vip_30" id="vip30">
+                        <label class="form-check-label" for="vip30">30 gün — {{ promotion_pricing.vip_30 }} token</label>
+                    </div>
+                    {% if user_token_balance < promotion_pricing.vip_7 %}
+                    <div class="alert alert-warning mt-2 mb-0">Balansınız kifayət etmir.</div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Ləğv et</button>
+                    <button type="submit" class="btn btn-evtap-accent" {% if user_token_balance < promotion_pricing.vip_7 %}disabled{% endif %}>Təsdiqlə</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="urgentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'tokens:activate_urgent' listing.pk %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Təcili et</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bu elanı 7 gün müddətinə təcili işarələmək istəyirsiniz? Bu, <strong>{{ promotion_pricing.urgent_7 }} token</strong> xərcləyəcək.</p>
+                    {% if user_token_balance < promotion_pricing.urgent_7 %}
+                    <div class="alert alert-warning mb-0">Balansınız kifayət etmir.</div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Ləğv et</button>
+                    <button type="submit" class="btn btn-evtap-accent" {% if user_token_balance < promotion_pricing.urgent_7 %}disabled{% endif %}>Təsdiqlə</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endif %}
 

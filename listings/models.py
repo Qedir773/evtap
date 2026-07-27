@@ -70,9 +70,9 @@ class ListingQuerySet(models.QuerySet):
     def approved(self):
         return self.filter(status=Listing.Status.APPROVED)
 
-    def currently_featured(self):
+    def currently_vip(self):
         return self.approved().filter(
-            is_featured=True, featured_until__gte=timezone.now()
+            is_vip=True, vip_expires_at__gte=timezone.now()
         )
 
 
@@ -117,8 +117,6 @@ class Listing(models.Model):
         max_length=10, choices=Status.choices, default=Status.PENDING
     )
     rejection_reason = models.TextField(blank=True)
-    is_featured = models.BooleanField(default=False)
-    featured_until = models.DateTimeField(null=True, blank=True)
     is_vip = models.BooleanField(default=False)
     vip_expires_at = models.DateTimeField(null=True, blank=True)
     is_urgent = models.BooleanField(default=False)
@@ -133,7 +131,7 @@ class Listing(models.Model):
     class Meta:
         verbose_name = "Elan"
         verbose_name_plural = "Elanlar"
-        ordering = ["-is_featured", "-is_vip", "-is_urgent", "-last_bumped_at", "-created_at"]
+        ordering = ["-is_vip", "-is_urgent", "-last_bumped_at", "-created_at"]
         indexes = [
             models.Index(fields=["status", "category"]),
             models.Index(fields=["status", "transaction_type"]),
@@ -156,12 +154,6 @@ class Listing(models.Model):
     def get_absolute_url(self):
         return reverse(
             "listings:listing_detail", kwargs={"slug": self.slug, "pk": self.pk}
-        )
-
-    @property
-    def is_currently_featured(self):
-        return bool(
-            self.is_featured and self.featured_until and self.featured_until >= timezone.now()
         )
 
     @property

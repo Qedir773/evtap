@@ -20,7 +20,6 @@
                 <th>Kateqoriya</th>
                 <th>Qiymət</th>
                 <th>Status</th>
-                <th>Seçilmiş</th>
                 <th>Təşviqlər</th>
                 <th></th>
             </tr>
@@ -35,13 +34,6 @@
                     <span class="badge evtap-badge-{{ listing.status }}">{{ listing.get_status_display }}</span>
                     {% if listing.status == "rejected" and listing.rejection_reason %}
                     <div class="small text-muted">{{ listing.rejection_reason }}</div>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if listing.is_currently_featured %}
-                    <span class="badge evtap-badge-featured">Bəli</span>
-                    {% else %}
-                    <a href="{% url 'promotions:boost' listing.pk %}" class="small evtap-link-accent">Önə çıxar</a>
                     {% endif %}
                 </td>
                 <td class="text-nowrap">
@@ -59,7 +51,7 @@
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="7" class="text-muted">Hələ heç bir elan yerləşdirməmisiniz.</td></tr>
+            <tr><td colspan="6" class="text-muted">Hələ heç bir elan yerləşdirməmisiniz.</td></tr>
             {% endfor %}
         </tbody>
     </table>

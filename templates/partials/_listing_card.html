@@ -24,8 +24,11 @@
                     <span>{{ listing.category.name }}</span>
                 </div>
             {% endif %}
-            {% if listing.is_currently_featured %}
-            <span class="evtap-ribbon">Seçilmiş</span>
+            {% if listing.is_currently_vip %}
+            <span class="evtap-ribbon">VIP</span>
+            {% endif %}
+            {% if listing.is_currently_urgent %}
+            <span class="evtap-ribbon evtap-ribbon-urgent">Təcili</span>
             {% endif %}
         </div>
         {% endwith %}

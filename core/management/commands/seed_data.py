@@ -11,7 +11,6 @@ from accounts.models import Profile
 from core.placeholder_images import generate_placeholder_photo
 from core.real_estate_photos import fetch_photo_pool
 from listings.models import Category, Listing, ListingImage
-from promotions.models import PLAN_PRICES, Promotion
 
 ROOM_LABELS_BY_CATEGORY = {
     "menzil": ["Salon", "Mətbəx", "Yataq otağı", "Eyvan", "Hamam otağı"],
@@ -67,7 +66,6 @@ class Command(BaseCommand):
 
         if options["flush"]:
             demo_listings = Listing.objects.filter(owner__username__startswith="demo_")
-            Promotion.objects.filter(listing__in=demo_listings).delete()
             ListingImage.objects.filter(listing__in=demo_listings).delete()
             demo_listings.delete()
             User.objects.filter(username__startswith="demo_").delete()
@@ -180,18 +178,10 @@ class Command(BaseCommand):
                 )
 
             if status == Listing.Status.APPROVED and random.random() < 0.1:
-                plan = random.choice(list(PLAN_PRICES.keys()))
-                promotion = Promotion.objects.create(
-                    listing=listing,
-                    user=listing.owner,
-                    plan=plan,
-                    amount=PLAN_PRICES[plan],
-                    status=Promotion.Status.PAID,
-                    paid_at=timezone.now(),
-                )
-                listing.is_featured = True
-                listing.featured_until = timezone.now() + timedelta(days=int(plan))
-                listing.save(update_fields=["is_featured", "featured_until"])
+                vip_days = random.choice([7, 10, 30])
+                listing.is_vip = True
+                listing.vip_expires_at = timezone.now() + timedelta(days=vip_days)
+                listing.save(update_fields=["is_vip", "vip_expires_at"])
 
             created += 1
 
