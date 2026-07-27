@@ -52,6 +52,15 @@ class PromotionPricingAdmin(admin.ModelAdmin):
     list_display_links = ("service_type",)
     list_editable = ("token_cost",)
 
+    def has_add_permission(self, request):
+        # Xidmət növləri sabitdir (bump/vip_7/vip_10/vip_30/urgent_7) və seed
+        # migration ilə yaradılıb — yeni sətir əlavə etmək yalnız təkrar
+        # service_type xətasına səbəb olur, ona görə yalnız redaktəyə icazə verilir.
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Profile)
 class ProfileTokenAdmin(admin.ModelAdmin):
