@@ -1,48 +1,42 @@
 {% load static %}
 <div class="col-sm-6 col-lg-3">
-    <div class="card evtap-card h-100 position-relative">
-        <form method="post" action="{% url 'listings:favorite_toggle' listing.pk %}" class="evtap-fav-form">
-            {% csrf_token %}
-            <button type="submit" class="evtap-fav-btn" aria-label="Sevimlilərə əlavə et">&#9825;</button>
-        </form>
-
+    <article class="card evtap-card h-100">
+        <div class="evtap-card-top">
+            <div class="evtap-card-badges">
+                {% if listing.is_currently_vip %}<span class="evtap-ribbon">VIP</span>{% endif %}
+                {% if listing.is_currently_urgent %}<span class="evtap-ribbon evtap-ribbon-urgent">Təcili</span>{% endif %}
+            </div>
+            <form method="post" action="{% url 'listings:favorite_toggle' listing.pk %}" class="evtap-fav-form">
+                {% csrf_token %}
+                <button type="submit" class="evtap-fav-btn" aria-label="Sevimlilərə əlavə et">&#9825;</button>
+            </form>
+        </div>
         {% with gallery=listing.gallery_urls %}
-        <div class="evtap-card-image evtap-card-gallery"
-             data-detail-url="{{ listing.get_absolute_url }}"
-             {% if gallery %}data-images="{{ gallery|join:'|' }}"{% endif %}>
+        <div class="evtap-card-image evtap-card-gallery" data-detail-url="{{ listing.get_absolute_url }}" {% if gallery %}data-images="{{ gallery|join:'|' }}"{% endif %}>
             {% if gallery %}
-                <img src="{{ gallery.0 }}" alt="{{ listing.title }}" class="evtap-gallery-current">
+                <img src="{{ gallery.0 }}" alt="{{ listing.title }}" class="evtap-gallery-current" loading="lazy">
                 {% if gallery|length > 1 %}
                 <button type="button" class="evtap-card-nav evtap-card-nav-prev" aria-label="Əvvəlki şəkil">&#8249;</button>
                 <button type="button" class="evtap-card-nav evtap-card-nav-next" aria-label="Növbəti şəkil">&#8250;</button>
-                <div class="evtap-card-dots">
-                    {% for url in gallery %}<span class="evtap-card-dot {% if forloop.first %}active{% endif %}"></span>{% endfor %}
-                </div>
+                <div class="evtap-card-dots">{% for url in gallery %}<span class="evtap-card-dot {% if forloop.first %}active{% endif %}"></span>{% endfor %}</div>
                 {% endif %}
             {% else %}
-                <div class="evtap-placeholder-img">
-                    <span>{{ listing.category.name }}</span>
-                </div>
-            {% endif %}
-            {% if listing.is_currently_vip %}
-            <span class="evtap-ribbon">VIP</span>
-            {% endif %}
-            {% if listing.is_currently_urgent %}
-            <span class="evtap-ribbon evtap-ribbon-urgent">Təcili</span>
+                <div class="evtap-placeholder-img"><span>{{ listing.category.name }}</span></div>
             {% endif %}
         </div>
         {% endwith %}
-
-        <a href="{{ listing.get_absolute_url }}" class="text-decoration-none text-body stretched-card-link">
+        <a href="{{ listing.get_absolute_url }}" class="evtap-card-link">
             <div class="card-body">
-                <div class="fw-bold evtap-price">{{ listing.price }} {{ listing.currency }}{% if listing.transaction_type == 'kiraye' %}<span class="small text-muted">/ay</span>{% endif %}</div>
-                <div class="evtap-card-title">{{ listing.title }}</div>
-                <div class="small text-muted"><span class="evtap-icon">&#128205;</span> {{ listing.region }}{% if listing.district %}, {{ listing.district }}{% endif %}</div>
-                <div class="small text-muted mt-1">
-                    {% if listing.rooms %}{{ listing.rooms }} otaq · {% endif %}{{ listing.area_m2 }} m²{% if listing.floor %} · {{ listing.floor }}/{{ listing.total_floors }} mərtəbə{% endif %}
+                <div class="evtap-card-meta"><span>{{ listing.transaction_type|title }}</span><time>{{ listing.created_at|date:"d.m.Y" }}</time></div>
+                <div class="evtap-price">{{ listing.price }} <small>{{ listing.currency }}{% if listing.transaction_type == 'kiraye' %}/ay{% endif %}</small></div>
+                <h3 class="evtap-card-title">{{ listing.title }}</h3>
+                <div class="evtap-location">&#128205; {{ listing.region }}{% if listing.district %}, {{ listing.district }}{% endif %}</div>
+                <div class="evtap-card-facts">
+                    {% if listing.rooms %}<span><strong>{{ listing.rooms }}</strong> otaq</span>{% endif %}
+                    <span><strong>{{ listing.area_m2 }}</strong> m²</span>
+                    {% if listing.floor %}<span><strong>{{ listing.floor }}/{{ listing.total_floors }}</strong> mərtəbə</span>{% endif %}
                 </div>
-                <div class="small text-muted evtap-card-date mt-1">Əlavə edilib: {{ listing.created_at|date:"d.m.Y" }}</div>
             </div>
         </a>
-    </div>
+    </article>
 </div>
