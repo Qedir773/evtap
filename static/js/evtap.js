@@ -286,3 +286,43 @@ document.addEventListener("DOMContentLoaded", function () {
     viewport.addEventListener("touchend", endDrag);
   });
 });
+
+
+// UI versiyası seçimi: seçimi brauzerdə saxlayır və bütün səhifələrdə tətbiq edir.
+(function () {
+    const storageKey = "evtap-ui-theme";
+    const allowedThemes = ["property", "myhome", "south"];
+
+    function applyTheme(theme) {
+        const safeTheme = allowedThemes.includes(theme) ? theme : "property";
+        document.documentElement.setAttribute("data-ui-theme", safeTheme);
+        localStorage.setItem(storageKey, safeTheme);
+
+        const themeColors = {
+            property: "#12372a",
+            myhome: "#12304a",
+            south: "#171717"
+        };
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) metaTheme.setAttribute("content", themeColors[safeTheme]);
+
+        const select = document.getElementById("evtapThemeSelect");
+        if (select) select.value = safeTheme;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedTheme = localStorage.getItem(storageKey) || "property";
+        applyTheme(savedTheme);
+
+        const select = document.getElementById("evtapThemeSelect");
+        if (select) {
+            select.addEventListener("change", function (event) {
+                applyTheme(event.target.value);
+                document.body.classList.add("evtap-theme-changing");
+                window.setTimeout(function () {
+                    document.body.classList.remove("evtap-theme-changing");
+                }, 280);
+            });
+        }
+    });
+}());
