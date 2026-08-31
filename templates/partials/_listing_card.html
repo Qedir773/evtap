@@ -28,7 +28,7 @@
         <a href="{{ listing.get_absolute_url }}" class="evtap-card-link">
             <div class="card-body">
                 <div class="evtap-card-meta"><span>{{ listing.transaction_type|title }}</span><time>{{ listing.created_at|date:"d.m.Y" }}</time></div>
-                <div class="evtap-price">{{ listing.price }} <small>{{ listing.currency }}{% if listing.transaction_type == 'kiraye' %}/ay{% endif %}</small></div>
+                <div class="evtap-price">{{ listing.price|floatformat:"0" }} <small>{{ listing.currency }}{% if listing.transaction_type == 'kiraye' %}/ay{% endif %}</small></div>
                 <h3 class="evtap-card-title">{{ listing.title }}</h3>
                 <div class="evtap-location">&#128205; {{ listing.region }}{% if listing.district %}, {{ listing.district }}{% endif %}</div>
                 <div class="evtap-card-facts">
