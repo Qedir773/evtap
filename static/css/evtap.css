@@ -745,3 +745,147 @@ input:focus, textarea:focus, select:focus, .form-control:focus, .form-select:foc
   .evtap-category-copy strong { font-size: .8rem; }
   .evtap-category-arrow { display: none; }
 }
+
+
+/* UI versiyası seçicisi */
+.evtap-theme-switcher {
+  height: 42px; display: inline-flex; align-items: center; gap: .42rem;
+  padding: .28rem .38rem .28rem .62rem; border: 1px solid rgba(255,255,255,.18);
+  border-radius: 11px; background: rgba(255,255,255,.07);
+}
+.evtap-theme-switcher label { color: rgba(255,255,255,.58); font-size: .64rem; font-weight: 800; letter-spacing: .1em; }
+.evtap-theme-switcher select {
+  width: auto; min-width: 112px; min-height: 32px; padding: .3rem 1.8rem .3rem .55rem;
+  border: 0; border-radius: 8px; background-color: rgba(255,255,255,.12);
+  color: #fff; font-size: .72rem; font-weight: 800; box-shadow: none;
+}
+.evtap-theme-switcher select option { color: #17211d; background: #fff; }
+body, .evtap-navbar, .evtap-hero, .evtap-card, .evtap-category-card, .evtap-footer,
+.btn, input, select, textarea { transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.evtap-theme-changing { opacity: .985; }
+
+/* Versiya 1 — Property: yumşaq yaşıl, dairəvi və sakit */
+html[data-ui-theme="property"] {
+  --evtap-primary: #12372a;
+  --evtap-primary-dark: #09281e;
+  --evtap-primary-soft: #e8f1ed;
+  --evtap-accent: #f2a65a;
+  --evtap-accent-dark: #d98432;
+  --evtap-bg: #f7f8f6;
+  --evtap-ink: #17211d;
+}
+
+/* Versiya 3 — MyHome: klassik portal, ağ naviqasiya və mavi-qırmızı vurğular */
+html[data-ui-theme="myhome"] {
+  --evtap-primary: #12304a;
+  --evtap-primary-dark: #0a2135;
+  --evtap-primary-soft: #eaf1f7;
+  --evtap-accent: #e5534b;
+  --evtap-accent-dark: #c73c35;
+  --evtap-sand: #eef3f6;
+  --evtap-ink: #152534;
+  --evtap-muted: #667786;
+  --evtap-line: #dce5eb;
+  --evtap-bg: #f4f7f9;
+  --evtap-radius: 14px;
+}
+html[data-ui-theme="myhome"] .evtap-navbar {
+  background: rgba(255,255,255,.97); border-bottom-color: #dce5eb;
+  box-shadow: 0 7px 24px rgba(18,48,74,.1);
+}
+html[data-ui-theme="myhome"] .evtap-brand,
+html[data-ui-theme="myhome"] .evtap-nav-links .nav-link,
+html[data-ui-theme="myhome"] .evtap-account-btn,
+html[data-ui-theme="myhome"] .evtap-login-btn { color: var(--evtap-primary); }
+html[data-ui-theme="myhome"] .evtap-brand-copy small { color: var(--evtap-muted); }
+html[data-ui-theme="myhome"] .evtap-logo-mark { border-radius: 7px; background: var(--evtap-accent); color: #fff; box-shadow: none; }
+html[data-ui-theme="myhome"] .evtap-nav-links .nav-link:hover { color: var(--evtap-accent); background: var(--evtap-primary-soft); }
+html[data-ui-theme="myhome"] .evtap-account-btn,
+html[data-ui-theme="myhome"] .evtap-login-btn { border-color: var(--evtap-line); }
+html[data-ui-theme="myhome"] .evtap-theme-switcher { border-color: var(--evtap-line); background: var(--evtap-primary-soft); }
+html[data-ui-theme="myhome"] .evtap-theme-switcher label { color: var(--evtap-muted); }
+html[data-ui-theme="myhome"] .evtap-theme-switcher select { color: var(--evtap-primary); background-color: #fff; }
+html[data-ui-theme="myhome"] .evtap-token-badge { color: var(--evtap-accent-dark); background: #fff0ef; border-color: #ffd5d2; }
+html[data-ui-theme="myhome"] .btn-evtap-accent { color: #fff; background: var(--evtap-accent); box-shadow: none; }
+html[data-ui-theme="myhome"] .evtap-hero {
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(10,33,53,.96), rgba(18,48,74,.73)),
+    linear-gradient(135deg, #143c5d, #8095a6);
+}
+html[data-ui-theme="myhome"] .evtap-hero h1 span,
+html[data-ui-theme="myhome"] .evtap-eyebrow,
+html[data-ui-theme="myhome"] .evtap-section-kicker { color: #ff7770; }
+html[data-ui-theme="myhome"] .evtap-search-shell,
+html[data-ui-theme="myhome"] .evtap-card,
+html[data-ui-theme="myhome"] .evtap-category-card { border-radius: 12px; }
+html[data-ui-theme="myhome"] .evtap-category-icon { border-radius: 8px; }
+html[data-ui-theme="myhome"] .evtap-ribbon { color: #fff; }
+html[data-ui-theme="myhome"] .evtap-creator-block { border-radius: 14px; background: linear-gradient(120deg, #12304a, #1d4e70); }
+html[data-ui-theme="myhome"] .evtap-footer { background: #0a2135; }
+
+/* Versiya 4 — South: tünd, premium, qızılı və kəskin xətlər */
+html[data-ui-theme="south"] {
+  --evtap-primary: #202020;
+  --evtap-primary-dark: #0c0c0c;
+  --evtap-primary-soft: #f1eee7;
+  --evtap-accent: #c7a464;
+  --evtap-accent-dark: #9f7d3f;
+  --evtap-sand: #eeeae2;
+  --evtap-ink: #181818;
+  --evtap-muted: #76726a;
+  --evtap-line: #ded9cf;
+  --evtap-bg: #f4f2ed;
+  --evtap-radius: 5px;
+}
+html[data-ui-theme="south"] body { letter-spacing: .005em; }
+html[data-ui-theme="south"] .evtap-navbar { min-height: 82px; background: rgba(15,15,15,.97); border-bottom: 2px solid var(--evtap-accent); }
+html[data-ui-theme="south"] .evtap-logo-mark { border-radius: 0; background: var(--evtap-accent); color: #111; box-shadow: none; }
+html[data-ui-theme="south"] .evtap-brand-copy strong,
+html[data-ui-theme="south"] .evtap-nav-links .nav-link,
+html[data-ui-theme="south"] .btn,
+html[data-ui-theme="south"] .evtap-card-title { letter-spacing: .03em; }
+html[data-ui-theme="south"] .evtap-nav-links .nav-link { text-transform: uppercase; font-size: .72rem; }
+html[data-ui-theme="south"] .btn-evtap-accent,
+html[data-ui-theme="south"] .evtap-account-btn,
+html[data-ui-theme="south"] .evtap-login-btn,
+html[data-ui-theme="south"] .evtap-theme-switcher,
+html[data-ui-theme="south"] .evtap-theme-switcher select { border-radius: 0; }
+html[data-ui-theme="south"] .btn-evtap-accent { color: #111; background: var(--evtap-accent); box-shadow: none; text-transform: uppercase; }
+html[data-ui-theme="south"] .evtap-hero {
+  min-height: 510px; display: flex; align-items: center; border-radius: 0;
+  background:
+    linear-gradient(105deg, rgba(0,0,0,.94) 0%, rgba(0,0,0,.72) 58%, rgba(199,164,100,.28) 100%),
+    linear-gradient(135deg, #2c2c2c, #080808);
+  box-shadow: 18px 18px 0 rgba(199,164,100,.18);
+}
+html[data-ui-theme="south"] .evtap-hero::after { opacity: .1; background-size: 110px 110px; }
+html[data-ui-theme="south"] .evtap-hero h1 { text-transform: uppercase; letter-spacing: -.025em; }
+html[data-ui-theme="south"] .evtap-hero h1 span,
+html[data-ui-theme="south"] .evtap-eyebrow,
+html[data-ui-theme="south"] .evtap-section-kicker { color: var(--evtap-accent); }
+html[data-ui-theme="south"] .evtap-search-shell { border-radius: 0; border-left: 5px solid var(--evtap-accent); }
+html[data-ui-theme="south"] input,
+html[data-ui-theme="south"] select,
+html[data-ui-theme="south"] textarea,
+html[data-ui-theme="south"] .btn,
+html[data-ui-theme="south"] .evtap-card,
+html[data-ui-theme="south"] .evtap-category-card,
+html[data-ui-theme="south"] .evtap-category-icon,
+html[data-ui-theme="south"] .evtap-filters,
+html[data-ui-theme="south"] .evtap-sort-bar,
+html[data-ui-theme="south"] .evtap-side-card,
+html[data-ui-theme="south"] .evtap-facts { border-radius: 0; }
+html[data-ui-theme="south"] .evtap-card { border-bottom: 3px solid var(--evtap-accent); box-shadow: 8px 8px 0 rgba(0,0,0,.05); }
+html[data-ui-theme="south"] .evtap-category-card { border-left: 3px solid var(--evtap-accent); }
+html[data-ui-theme="south"] .evtap-category-icon { color: var(--evtap-accent-dark); background: #f4efe4; }
+html[data-ui-theme="south"] .evtap-section-head h2 { text-transform: uppercase; font-size: clamp(1.35rem,3vw,1.9rem); letter-spacing: .01em; }
+html[data-ui-theme="south"] .evtap-creator-block { border-radius: 0; border-left: 5px solid var(--evtap-accent); background: #151515; }
+html[data-ui-theme="south"] .evtap-footer { background: #090909; border-top: 3px solid var(--evtap-accent); }
+
+@media (max-width: 991.98px) {
+  html[data-ui-theme="myhome"] .evtap-navbar .navbar-collapse { background: #fff; border-color: var(--evtap-line); }
+  html[data-ui-theme="myhome"] .evtap-menu-toggle { background: var(--evtap-primary); }
+  .evtap-theme-switcher { flex: 1 1 100% !important; justify-content: space-between; }
+  .evtap-theme-switcher select { flex: 1; }
+}
