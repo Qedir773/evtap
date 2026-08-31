@@ -24,6 +24,14 @@
                 {% endif %}
             </ul>
             <div class="evtap-nav-actions">
+                <div class="evtap-theme-switcher">
+                    <label for="evtapThemeSelect">UI</label>
+                    <select id="evtapThemeSelect" aria-label="Sayt görünüşünü seç">
+                        <option value="property">1 · Property</option>
+                        <option value="myhome">3 · MyHome</option>
+                        <option value="south">4 · South</option>
+                    </select>
+                </div>
                 {% if user.is_authenticated %}
                 <span class="evtap-token-badge" title="Token balansınız">&#9889; {{ user_token_balance }}</span>
                 <div class="dropdown">
